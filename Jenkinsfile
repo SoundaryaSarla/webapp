@@ -3,9 +3,9 @@ pipeline {
     environment {
         AWS_ACCOUNT_ID="869250677914"
         AWS_DEFAULT_REGION="us-east-1"
-        IMAGE_REPO_NAME="gol1"
+        IMAGE_REPO_NAME="web-app"
         DOCKER_HUB_ID="raajesh404"
-        IMAGE_TAG="latest5"
+        IMAGE_TAG="1.0.0"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
     }
    
