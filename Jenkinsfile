@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Logging into AWS ECR') {
             steps {
-                sh 'aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com'
+                sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
             }
         }
         stage('clone the repo from github') {
@@ -21,18 +21,34 @@ pipeline {
         }
         stage('maven build') {
             steps {
-                sh 'mvn clean package'
+                sh "mvn clean package"
             }
         }
         stage('archive the artifacts:war') {
             steps {
                 archiveArtifacts artifacts: 'target/*.war', followSymlinks: false
-                sh 'mv target/*war .'
+                sh "mv target/*war ."
             }
         }
         stage('docker image build') {
             steps {
-                sh 'docker image build -t ${IMAGE_REPO_NAME}:${IMAGE_TAG} .'
+                sh "docker image build -t ${IMAGE_REPO_NAME}:${IMAGE_TAG} ."
+            }
+        }
+        stage('Pushing to ECR') {
+            steps {  
+                sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:${IMAGE_TAG}"
+                sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+            }
+        }
+        stage('Pushing to Docker-Hub') {
+            steps {  
+                withCredentials([string(credentialsId: 'docker-hub', variable: 'dockerhubPWD')]) {
+                sh "docker login -u ${DOCKER_HUB_ID} -p ${dockerhubPWD}"
+                }
+                        
+                sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${DOCKER_HUB_ID}/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+                sh "docker push ${DOCKER_HUB_ID}/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
             }
         }
     }
