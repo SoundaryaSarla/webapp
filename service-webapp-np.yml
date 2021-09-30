@@ -4,9 +4,9 @@ metadata:
    name: service-np
 spec: 
   selector: 
-     app: gol  
+     app: webapp  
   type: NodePort
   ports: 
-  - nodePort: 30007
+  - nodePort: 30008
     port: 80
     targetPort: 8080

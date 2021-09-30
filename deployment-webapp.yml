@@ -1,22 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gol-deployment
+  name: webapp-deployment
   labels:
-    app: gol
+    app: webapp
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: gol
+      app: webapp
   template:
     metadata:
       labels:
-        app: gol
+        app: webapp
     spec:
       containers:
-      - name: gol
-        image: 869250677914.dkr.ecr.us-east-1.amazonaws.com/gol1:latest5
-        imagePullPolicy: Always
+      - name: webapp
+        image: raajesh404/webapp:2.0
         ports:
         - containerPort: 8080

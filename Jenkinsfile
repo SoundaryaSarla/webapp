@@ -51,5 +51,21 @@ pipeline {
                 sh "docker push ${DOCKER_HUB_ID}/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
             }
         }
+        stage('k8s deploy') {
+            steps {
+                sshagent(['kubeadm']) {
+                                      
+                    sh "scp -o StrictHostKeyChecking=no deployment-webapp.yml service-webapp-np.yml ubuntu@54.173.219.87:/home/ubuntu/"
+                    script{
+                        try{
+                            sh "ssh ubuntu@54.173.219.87 sudo kubectl apply -f ."
+                        }
+                        catch(error){
+                            sh "ssh ubuntu@54.173.219.87 sudo kubectl create -f ."
+                        }
+                    }
+                }
+            }
+        }
     }
 }
