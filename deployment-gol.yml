@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gol-deployment
+  labels:
+    app: gol
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gol
+  template:
+    metadata:
+      labels:
+        app: gol
+    spec:
+      containers:
+      - name: gol
+        image: 869250677914.dkr.ecr.us-east-1.amazonaws.com/gol1:latest5
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080

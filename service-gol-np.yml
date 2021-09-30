@@ -1,0 +1,12 @@
+apiVersion: v1 
+kind: Service
+metadata: 
+   name: service-np
+spec: 
+  selector: 
+     app: gol  
+  type: NodePort
+  ports: 
+  - nodePort: 30007
+    port: 80
+    targetPort: 8080
