@@ -88,7 +88,7 @@ git config --global user.email “rohithkumar893@gmail.com”
 
 git push origin master ==>> githubaccountname and github passsowrd ==>>> remote.
 
-
+## Git steps 
 
 * git clone url
 * ls
