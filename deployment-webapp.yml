@@ -14,7 +14,7 @@ spec:
       labels:
         app: webapp
     spec:
-      nodeName: ip-172.31.87.255  ## node name
+##     nodeName: ip-172.31.87.255  ## node name
       containers:
       - name: webapp
         image: raajesh404/webapp:4.0

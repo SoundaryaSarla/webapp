@@ -30,11 +30,13 @@ pipeline {
                 sh "mv target/*war ."
             }
         }
+        // install docker and docker pipeline plugins in jenkins
         stage('docker image build') {
             steps {
                 sh "docker image build -t ${IMAGE_REPO_NAME}:${IMAGE_TAG} ."
             }
         }
+        //create a repo in ecr
         stage('Pushing to ECR') {
             steps {  
                 sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:${IMAGE_TAG}"
@@ -51,6 +53,7 @@ pipeline {
                 sh "docker push ${DOCKER_HUB_ID}/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
             }
         }
+        //install sshagent plugin and generate syntax in syntax generator: add user name and private ip of kubeadm master
         stage('k8s deploy') {
             steps {
                 sshagent(['kubeadm']) {
