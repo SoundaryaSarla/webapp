@@ -14,10 +14,12 @@ spec:
       labels:
         app: webapp
     spec:
+      nodeName: ip-172.31.87.255  ## node name
       containers:
       - name: webapp
         image: raajesh404/webapp:3.0
         ports:
         - containerPort: 8080
-      nodeSelector:
-        kubernetes.io/hostname: ip-172-31-28-160
+## labels - kubectl get nodes --show-labels - kubectl label nodes <your-node-name> disktype=ssd
+##    nodeSelector:
+##      kubernetes.io/hostname: ip-172.31.87.255  
