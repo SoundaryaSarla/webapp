@@ -19,3 +19,5 @@ spec:
         image: raajesh404/webapp:3.0
         ports:
         - containerPort: 8080
+      nodeSelector:
+        kubernetes.io/hostname: ip-172-31-28-160
