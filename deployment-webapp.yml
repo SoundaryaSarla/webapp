@@ -17,7 +17,7 @@ spec:
 ##     nodeName: ip-172.31.87.255  ## node name
       containers:
       - name: webapp
-        image: raajesh404/webapp:4.0
+        image: ajesh22/webapp:1.0
         ports:
         - containerPort: 8080
 ## labels - kubectl get nodes --show-labels - kubectl label nodes <your-node-name> disktype=ssd
