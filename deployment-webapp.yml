@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: raajesh404/webapp:2.0
+        image: raajesh404/webapp:3.0
         ports:
         - containerPort: 8080
