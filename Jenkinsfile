@@ -3,9 +3,9 @@ pipeline {
     environment {
         AWS_ACCOUNT_ID="882956824445"
         AWS_DEFAULT_REGION="ap-northeast-1"
-        IMAGE_REPO_NAME="arya"
-        DOCKER_HUB_ID="ajesh22"
-        IMAGE_TAG="4.0"
+        IMAGE_REPO_NAME="soundaryaecr"
+        DOCKER_HUB_ID="soundarya17"
+        IMAGE_TAG="1.0"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
     }
     stages {
@@ -16,7 +16,7 @@ pipeline {
         }
         stage('clone the repo from github') {
             steps {
-                git 'https://github.com/AjeshReddy/webapp.git'
+                git 'https://github.com/SoundaryaSarla/webapp.git'
             }
         }
         stage('maven build') {
@@ -45,8 +45,8 @@ pipeline {
         }
         stage('Pushing to Docker-Hub') {
             steps {  
-                withCredentials([string(credentialsId: 'password', variable: 'kubeadm')]) {
-                sh "docker login -u ${DOCKER_HUB_ID} -p ${kubeadm}"
+                withCredentials([string(credentialsId: 'docker', variable: 'dockercredentials')]) {
+                sh "docker login -u ${DOCKER_HUB_ID} -p ${dockercredentials}"
                 }
                         
                 sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${DOCKER_HUB_ID}/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
@@ -56,15 +56,15 @@ pipeline {
         //install sshagent plugin and generate syntax in syntax generator: add user name and private ip of kubeadm master
         stage('k8s deploy') {
             steps {
-                sshagent(['ajesh2217']) {
+                sshagent(['awskey']) {
                                       
-                    sh "scp -o StrictHostKeyChecking=no deployment-webapp.yml service-webapp-np.yml ubuntu@13.114.191.199:/home/ubuntu/"
+                    sh "scp -o StrictHostKeyChecking=no deployment-webapp.yml service-webapp-np.yml ubuntu@3.112.239.13:/home/ubuntu/"
                     script{
                         try{
-                            sh "ssh ubuntu@13.114.191.199 sudo kubectl apply -f ."
+                            sh "ssh ubuntu@3.112.239.13 sudo kubectl apply -f ."
                         }
                         catch(error){
-                            sh "ssh ubuntu@13.114.191.199 sudo kubectl create -f ."
+                            sh "ssh ubuntu@3.112.239.13 sudo kubectl create -f ."
                         }
                     }
                 }
