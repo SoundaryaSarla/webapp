@@ -5,7 +5,7 @@ pipeline {
         AWS_DEFAULT_REGION="ap-northeast-1"
         IMAGE_REPO_NAME="soundaryaecr"
         DOCKER_HUB_ID="soundarya17"
-        IMAGE_TAG="1.0"
+        IMAGE_TAG="2.0"
         REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
     }
     stages {
