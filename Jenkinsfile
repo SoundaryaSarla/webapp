@@ -45,8 +45,8 @@ pipeline {
         }
         stage('Pushing to Docker-Hub') {
             steps {  
-                withCredentials([string(credentialsId: 'docker', variable: 'dockercredentials')]) {
-                sh "docker login -u ${DOCKER_HUB_ID} -p ${dockercredentials}"
+                withCredentials([string(credentialsId: 'dockerkey', variable: 'docker1')]) {
+                sh "docker login -u ${DOCKER_HUB_ID} -p ${docker1}"
                 }
                         
                 sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${DOCKER_HUB_ID}/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
@@ -56,7 +56,7 @@ pipeline {
         //install sshagent plugin and generate syntax in syntax generator: add user name and private ip of kubeadm master
         stage('k8s deploy') {
             steps {
-                sshagent(['awskey']) {
+                sshagent(['awssshkey']) {
                                       
                     sh "scp -o StrictHostKeyChecking=no deployment-webapp.yml service-webapp-np.yml ubuntu@54.238.207.233:/home/ubuntu/"
                     script{
